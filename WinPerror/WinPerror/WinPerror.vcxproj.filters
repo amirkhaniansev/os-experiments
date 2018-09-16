@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.c">
+    <ClCompile Include="WinPerror.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

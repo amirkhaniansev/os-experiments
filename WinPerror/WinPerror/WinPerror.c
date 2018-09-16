@@ -32,7 +32,7 @@ wchar_t* get_error_message(DWORD err_code)
 	if (err_code == 0)
 		return L"No error detected";
 
-	// defing message variable
+	// defining message variable
 	LPWSTR err_msg = NULL;
 
 	// getting message corresponding to the given error code
@@ -52,7 +52,7 @@ wchar_t* get_error_message(DWORD err_code)
 // gets the message of NT last error
 wchar_t* get_last_error_message()
 {
-	return get_error_message(GetLastError);
+	return get_error_message(GetLastError());
 }
 
 // prints help information to console
@@ -120,5 +120,5 @@ void start_input()
 // entry point
 int main()
 {
-	start_input();
+	wprintf(get_error_message(4));
 }
