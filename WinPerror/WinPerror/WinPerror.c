@@ -25,19 +25,100 @@
 #include <stdio.h>
 #include <Windows.h>
 
+// gets error message
+wchar_t* get_error_message(DWORD err_code)
+{
+	// if error code is 0 , then there is no error
+	if (err_code == 0)
+		return L"No error detected";
+
+	// defing message variable
+	LPWSTR err_msg = NULL;
+
+	// getting message corresponding to the given error code
+	DWORD msg_size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL, err_code, 0, &err_msg, 0, NULL);
+
+	// if there is no error message for that error code return no error
+	if (msg_size == 0)
+		return L"No Error";
+
+	// othwerwise return error code
+	return (wchar_t*)err_msg;
+}
+
+// gets the message of NT last error
+wchar_t* get_last_error_message()
+{
+	return get_error_message(GetLastError);
+}
+
+// prints help information to console
+void print_help_info()
+{
+	printf("Type\n");
+	printf("-h for help\n");
+	printf("-last for last error message of NT\n");
+	printf("-[error code] for the error message corresponding to the error code\n");
+	printf("-exit for closing the program\n");
+}
+
+// starts input for testing
+// this function needs to be fixed
+void start_input()
+{
+	print_help_info();
+
+	char* buffer = malloc(256 * sizeof(buffer));
+	const char* inv_in_msg = "Invalid input";
+
+	while (1)
+	{
+		// be careful this part is not working properly
+		int scan_result = scanf_s("%c",&buffer);
+
+		if (scan_result == 1)
+		{
+			printf(inv_in_msg);
+
+			continue;
+		}
+	  
+		if (strcmp(buffer, "-h") == 0)
+		{
+			print_help_info();
+		}
+		else if (strcmp(buffer, "-last") == 0)
+		{
+			wprintf(get_last_error_message());
+		}
+		else if (strcmp(buffer, "-exit") == 0)
+		{
+			break;
+		}
+		else
+		{
+			int code = atoi(buffer);
+
+			if (code == 0)
+			{
+				printf(inv_in_msg);	
+				continue;
+			}
+
+			wprintf(get_error_message(code));
+		}
+
+		printf("\n");
+	}
+
+	free(buffer);
+}
+
 // entry point
 int main()
 {
-	// getting OS error
-	long errcode = GetLastError();
-
-	// printing error code to console
-	printf("Error code is %d\n", errcode);
-
-	// ending
-	printf("Press <Enter> to close");
-	getchar();
-
-	// returning 0
-	return 0;
+	start_input();
 }
