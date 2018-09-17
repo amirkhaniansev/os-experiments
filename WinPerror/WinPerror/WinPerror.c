@@ -25,6 +25,25 @@
 #include <stdio.h>
 #include <Windows.h>
 
+// defining macros for having colourful output
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+// defining macros for help info
+#define TYPE_MSG "Type\n"
+#define HELP_MSG "-h for help\n"
+#define LAST_MSG "-last for last error message of NT\n"
+#define CODE_MSG "-[error code] for the error message corresponding to the error code\n"
+#define EXIT_MSG "-exit for closing the program\n"
+
+// defining buffer size
+#define BUFF_SIZE 0x100
+
 // gets error message
 wchar_t* get_error_message(DWORD err_code)
 {
@@ -36,6 +55,19 @@ wchar_t* get_error_message(DWORD err_code)
 	LPWSTR err_msg = NULL;
 
 	// getting message corresponding to the given error code
+	/* FORMAT_MESSAGE_ALLOCATE_BUFFER :
+	 * The function allocates a buffer large enough to hold the formatted message, 
+	 * and places a pointer to the allocated buffer at the address specified by lpBuffer.
+	 *
+	 * FORMAT_MESSAGE_FROM_SYSTEM :
+     * The function should search the system message-table resource(s) 
+	 * for the requested message.
+	 *
+	 * FORMAT_MESSAGE_IGNORE_INSERTS :
+	 * Insert sequences in the message definition are to be ignored and 
+	 * passed through to the output buffer unchanged.
+	 */
+	// for more info please see https://docs.microsoft.com (MSDN)
 	DWORD msg_size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -55,70 +87,75 @@ wchar_t* get_last_error_message()
 	return get_error_message(GetLastError());
 }
 
+// prints the given message in the specified color
+void print_specific_message(const char* color,const char* message)
+{
+	printf(color);
+	printf(message);
+	printf(ANSI_COLOR_RESET);
+}
+
 // prints help information to console
 void print_help_info()
 {
-	printf("Type\n");
-	printf("-h for help\n");
-	printf("-last for last error message of NT\n");
-	printf("-[error code] for the error message corresponding to the error code\n");
-	printf("-exit for closing the program\n");
+	printf("%s%s%s%s%s",TYPE_MSG, HELP_MSG, LAST_MSG, CODE_MSG, EXIT_MSG);
 }
 
-// starts input for testing
-// this function needs to be fixed
-void start_input()
+// initializes input process
+// ends when user enters the appropriate command: -exit.
+void init_input_process()
 {
+	// printing help info
 	print_help_info();
 
-	char* buffer = malloc(256 * sizeof(buffer));
+	// allocating buffer
+	char* buffer = malloc(BUFF_SIZE * sizeof(char));
+
+	// const variable for invalid input message
 	const char* inv_in_msg = "Invalid input";
 
+	// starting endless loop for input
+	// this will in end in the case user enters -exit
 	while (1)
 	{
-		// be careful this part is not working properly
-		int scan_result = scanf_s("%c",&buffer);
+		printf("\n");
 
-		if (scan_result == 1)
+		// scanning stdin stream
+		if (!scanf_s("%s", buffer, BUFF_SIZE) || *buffer != '-')
 		{
-			printf(inv_in_msg);
-
-			continue;
+			print_specific_message(ANSI_COLOR_RED, inv_in_msg); continue;
 		}
 	  
-		if (strcmp(buffer, "-h") == 0)
-		{
-			print_help_info();
-		}
-		else if (strcmp(buffer, "-last") == 0)
-		{
+		// processing input
+		if (!strcmp(buffer, "-h"))
+			print_help_info();		
+		else if (!strcmp(buffer, "-last"))
 			wprintf(get_last_error_message());
-		}
-		else if (strcmp(buffer, "-exit") == 0)
-		{
+		else if (!strcmp(buffer, "-exit"))
 			break;
-		}
 		else
 		{
-			int code = atoi(buffer);
+			// parsing string to int
+			int code = atoi(buffer + 1);
 
-			if (code == 0)
+			if (!code)
 			{
-				printf(inv_in_msg);	
-				continue;
+				print_specific_message(ANSI_COLOR_RED, inv_in_msg); continue;
 			}
 
+			// printing NT error message corresponding to the error message ID entered by the user
 			wprintf(get_error_message(code));
 		}
-
-		printf("\n");
 	}
 
+	// deallocating memory
+	// i.e giving memory back to OS by calling OS allocator
 	free(buffer);
 }
 
 // entry point
 int main()
 {
-	wprintf(get_error_message(4));
+	init_input_process();
+	return 0;
 }
