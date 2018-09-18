@@ -109,7 +109,7 @@ void init_input_process()
 	print_help_info();
 
 	// allocating buffer
-	char* buffer = malloc(BUFF_SIZE * sizeof(char));
+	char* buffer = (char*)malloc(BUFF_SIZE * sizeof(char));
 
 	// const variable for invalid input message
 	const char* inv_in_msg = "Invalid input";
