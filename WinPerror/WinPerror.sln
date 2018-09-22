@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinPerror", "WinPerror\WinPerror.vcxproj", "{341CB6AC-A6E9-4D43-A753-8652758BC176}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleWinPerror", "SimpleWinPerror\SimpleWinPerror.vcxproj", "{FF770BF4-6AE9-466A-B661-D3F029701E56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{341CB6AC-A6E9-4D43-A753-8652758BC176}.Release|x64.Build.0 = Release|x64
 		{341CB6AC-A6E9-4D43-A753-8652758BC176}.Release|x86.ActiveCfg = Release|Win32
 		{341CB6AC-A6E9-4D43-A753-8652758BC176}.Release|x86.Build.0 = Release|Win32
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Debug|x64.ActiveCfg = Debug|x64
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Debug|x64.Build.0 = Debug|x64
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Debug|x86.ActiveCfg = Debug|Win32
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Debug|x86.Build.0 = Debug|Win32
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Release|x64.ActiveCfg = Release|x64
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Release|x64.Build.0 = Release|x64
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Release|x86.ActiveCfg = Release|Win32
+		{FF770BF4-6AE9-466A-B661-D3F029701E56}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
