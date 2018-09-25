@@ -37,8 +37,7 @@ void win_perror() {
 
 	wprintf(L"Last error is: %s", err_msg);
 
-	// this part needs to be fixed
-	free(err_msg);
+	LocalFree(err_msg);
 }
 
 BOOL copy_file(LPCTSTR lpExistingFileName, LPCTSTR lpNewFileName, BOOL bFailIfExists) {
