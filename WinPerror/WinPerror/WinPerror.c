@@ -60,7 +60,7 @@ wchar_t* get_error_message(DWORD err_code)
 	 * and places a pointer to the allocated buffer at the address specified by lpBuffer.
 	 *
 	 * FORMAT_MESSAGE_FROM_SYSTEM :
-     * The function should search the system message-table resource(s) 
+         * The function should search the system message-table resource(s) 
 	 * for the requested message.
 	 *
 	 * FORMAT_MESSAGE_IGNORE_INSERTS :
