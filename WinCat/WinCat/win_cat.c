@@ -30,8 +30,7 @@
 
 // Unix perror equivalent for Windows
 // for more information see https://www.github.com/amirkhaniansev/os-experiments/WinPerror
-void win_perror()
-{
+void win_perror() {
 	wchar_t* err_msg = NULL;
 
 	DWORD msg_size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -52,8 +51,10 @@ BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	if (source_handle == INVALID_HANDLE_VALUE || dest_handle == INVALID_HANDLE_VALUE)
 		return FALSE;
 
+	// allocating buffer
 	LPCVOID buffer = (unsigned char*)malloc(1024);
 
+	// variables for read and write size information
 	DWORD number_of_bytes_to_read = 256;
 	DWORD number_of_bytes_to_write = 0;
 
@@ -87,10 +88,27 @@ BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	return TRUE;
 }
 
+// gets input from stdin and copies to stdout
+void std_in_out() {
+	// getting handles
+	HANDLE std_in_handle = GetStdHandle(STD_INPUT_HANDLE);
+	HANDLE std_out_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	
+	// starting endless input and output process
+	while (1) {
+		if (copy_file(std_in_handle, std_out_handle) == FALSE) {
+			win_perror();
+			break;
+		}
+	}
+}
+
 // main function, entry point for program
 // TODO providing all functionality
 int main(int argc, char** argv) {
+	// if no arguments are provided
+	// WinCat should get input from stdin and copy it to stdout
 	if (argc == 1)
-		printf(NO_ARG_ERROR);
+		std_in_out();
 	return 0;
 }
