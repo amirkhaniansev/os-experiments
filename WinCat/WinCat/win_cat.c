@@ -23,14 +23,15 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+
 #include <Windows.h>
 
-// defining macros for error messages
-#define NO_ARG_ERROR "No arguments error"
+// Helper methods
 
 // Unix perror equivalent for Windows
 // for more information see https://www.github.com/amirkhaniansev/os-experiments/WinPerror
-void win_perror() {
+static void win_perror() {
 	wchar_t* err_msg = NULL;
 
 	DWORD msg_size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -47,7 +48,7 @@ void win_perror() {
 // Function for copying files
 // This the modified version of CopyFile
 // For more information see https://www.github.com/os-experiments/CopyFile
-BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
+static BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	if (source_handle == INVALID_HANDLE_VALUE || dest_handle == INVALID_HANDLE_VALUE)
 		return FALSE;
 
@@ -89,7 +90,7 @@ BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 }
 
 // gets input from stdin and copies to stdout
-void std_in_out() {
+static void std_in_out() {
 	// getting handles
 	HANDLE std_in_handle = GetStdHandle(STD_INPUT_HANDLE);
 	HANDLE std_out_handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -103,12 +104,65 @@ void std_in_out() {
 	}
 }
 
+// copies files to output file if it is not null and to stdout otherwise
+static void copy_to_output_file(int amount, wchar_t** file_names, HANDLE dest_handle) {
+	HANDLE source_handle;
+	int counter = 0;
+
+	while (counter < amount) {
+		// getting source handle
+		source_handle = CreateFile(
+			file_names[counter],
+			GENERIC_READ,
+			0,
+			NULL,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL,
+			NULL);
+
+		wprintf(L"\nCopying %s...\n\n", file_names[counter++]);
+
+		if (copy_file(source_handle, dest_handle) == FALSE)
+			win_perror();
+
+		if (CloseHandle(source_handle) == FALSE)
+			win_perror();
+	}
+}
+
 // main function, entry point for program
-// TODO providing all functionality
-int main(int argc, char** argv) {
+// TODO: handle Ctrl + C signal
+int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
 	// if no arguments are provided
 	// WinCat should get input from stdin and copy it to stdout
 	if (argc == 1)
 		std_in_out();
+	// otherwise it should process the arguments
+	// 1st case: File1 File2 ... >FileN : should write File1-FileN-1 in FileN
+	// 2nd case: File1 File2 ... FileN : should write File1-FileN in stdout
+	else if (argc > 1) {
+		HANDLE dest_handle = 0;
+		int file_amount = 0;
+		wchar_t* last_arg = argv[argc - 1];
+
+		if (last_arg[0] == '-') {
+			dest_handle = CreateFile(
+				argv[argc - 1] + 1,
+				GENERIC_WRITE,
+				0,
+				NULL,
+				OPEN_EXISTING,
+				FILE_ATTRIBUTE_NORMAL,
+				NULL);
+			file_amount = argc - 2;
+		}
+		else {
+			dest_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+			file_amount = argc - 1;
+		}
+
+		copy_to_output_file(file_amount, argv + 1, dest_handle);
+	}
+
 	return 0;
 }
