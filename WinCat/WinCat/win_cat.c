@@ -34,12 +34,13 @@
 static void win_perror() {
 	wchar_t* err_msg = NULL;
 
+	// getting error message with the the given code from GetLastError()
 	DWORD msg_size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL, GetLastError(), 0, &err_msg, 0, NULL);
 
-	wprintf(L"Last error is: %s", err_msg);
+	wprintf(L"Error occured: %s", err_msg);
 
 	// deallocating memory that OS allocated for storing message
 	LocalFree(err_msg);
@@ -47,8 +48,9 @@ static void win_perror() {
 
 // Function for copying files
 // This the modified version of CopyFile
-// For more information see https://www.github.com/os-experiments/CopyFile
+// For more information see https://www.github.com/amirkhaniansev/os-experiments/CopyFile
 static BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
+	// if any of handles is invalid then return FALSE indicating error
 	if (source_handle == INVALID_HANDLE_VALUE || dest_handle == INVALID_HANDLE_VALUE)
 		return FALSE;
 
@@ -83,7 +85,7 @@ static BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 
 	} while (number_of_bytes_read != 0);
 
-	// deallocating memory
+	// deallocating memory 
 	free(buffer);
 
 	return TRUE;
@@ -143,18 +145,18 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
 	else if (argc > 1) {
 		HANDLE dest_handle = 0;
 		int file_amount = 0;
-		wchar_t* last_arg = argv[argc - 1];
+		wchar_t* last_arg = argv[argc - 2];
 
-		if (last_arg[0] == '-') {
+		if (strcmp(last_arg,"]") == 0) {
 			dest_handle = CreateFile(
-				argv[argc - 1] + 1,
+				argv[argc - 1],
 				GENERIC_WRITE,
 				0,
 				NULL,
-				OPEN_EXISTING,
+				CREATE_ALWAYS,
 				FILE_ATTRIBUTE_NORMAL,
 				NULL);
-			file_amount = argc - 2;
+			file_amount = argc - 3;
 		}
 		else {
 			dest_handle = GetStdHandle(STD_OUTPUT_HANDLE);
