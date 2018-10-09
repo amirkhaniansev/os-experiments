@@ -27,6 +27,9 @@
 
 #include <Windows.h>
 
+// global variable for copying indicator
+BOOL TO_CONTINUE = TRUE;
+
 // Helper methods
 
 // Unix perror equivalent for Windows
@@ -46,6 +49,18 @@ static void win_perror() {
 	LocalFree(err_msg);
 }
 
+// CTRL+C event handler
+static BOOL ctrl_c_handler(DWORD ctrltype) {
+	// if Ctrl + C signal is receieved then process
+	// making TO_CONTINUE false which will inform copy_file function to stop copying
+	if (ctrltype == CTRL_C_EVENT) {
+		TO_CONTINUE = FALSE;
+		// here returning TRUE to tell the NT that Ctrl + C is handled
+		return TRUE;
+	}
+	return FALSE;
+}
+
 // Function for copying files
 // This the modified version of CopyFile
 // For more information see https://www.github.com/amirkhaniansev/os-experiments/CopyFile
@@ -53,6 +68,8 @@ static BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	// if any of handles is invalid then return FALSE indicating error
 	if (source_handle == INVALID_HANDLE_VALUE || dest_handle == INVALID_HANDLE_VALUE)
 		return FALSE;
+
+	TO_CONTINUE = TRUE;
 
 	// allocating buffer
 	LPCVOID buffer = (unsigned char*)malloc(1024);
@@ -67,6 +84,12 @@ static BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	LPOVERLAPPED overlapped = NULL;
 
 	do {
+		// if TO_CONTINUE indicator is false stop copying process
+		if (TO_CONTINUE == FALSE) {
+			wprintf(L"\nCopying is interrupted...\n");
+			break;
+		}
+
 		// reading
 		if (ReadFile(source_handle,
 			buffer,
@@ -111,6 +134,7 @@ static void copy_to_output_file(int amount, wchar_t** file_names, HANDLE dest_ha
 	HANDLE source_handle;
 	int counter = 0;
 
+	// starting copying
 	while (counter < amount) {
 		// getting source handle
 		source_handle = CreateFile(
@@ -147,6 +171,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
 		int file_amount = 0;
 		wchar_t* last_arg = argv[argc - 2];
 
+		// determining destination handler
 		if (strcmp(last_arg,"]") == 0) {
 			dest_handle = CreateFile(
 				argv[argc - 1],
@@ -161,8 +186,13 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
 		else {
 			dest_handle = GetStdHandle(STD_OUTPUT_HANDLE);
 			file_amount = argc - 1;
-		}
+		}		
 
+		// registering CTRL+C handler to process handler routine
+		if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)ctrl_c_handler, TRUE) == FALSE)
+			return 0;
+
+		// starting copying
 		copy_to_output_file(file_amount, argv + 1, dest_handle);
 	}
 
