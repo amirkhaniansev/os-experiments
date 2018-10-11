@@ -164,7 +164,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
 	if (argc == 1)
 		std_in_out();
 	// otherwise it should process the arguments
-	// 1st case: File1 File2 ... >FileN : should write File1-FileN-1 in FileN
+	// 1st case: File1 File2 ... ] FileN : should write File1-FileN-1 in FileN
 	// 2nd case: File1 File2 ... FileN : should write File1-FileN in stdout
 	else if (argc > 1) {
 		HANDLE dest_handle = 0;
