@@ -11,5 +11,5 @@ If you have Visual Studio 2015 or less version, please migrate to Visual Studio 
 ### Ubuntu
 Ubuntu examples can be built with GCC (GNU Compiler Collection).
 
-### Contribution
+## Contribution
 If you have any questions or offers do not hesitate to create issues and pull requests.
