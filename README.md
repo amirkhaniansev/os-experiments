@@ -1,12 +1,12 @@
 # os-experiments
 These repository contains experiments with operating systems, especially with Windows and Ubuntu.
 
-# Some preconditions for successfull build
+## Some preconditions for successfull build
 
-# Windows
+### Windows
 NT examples of this repository are built with Visual Studio 2017 Community.
-For successfull build uncheck Use Precompiled headers option from Properties -> C/C++ -> Precompiled Headers.
+For successfull build uncheck "Use Precompiled headers option" from Properties -> C/C++ -> Precompiled Headers.
 If you have Visual Studio 2015 or less version, please migrate to Visual Studio 2017 to be able to open solutions or just recreate the projects with source files. 
 
-# Ubuntu
+### Ubuntu
 Ubuntu examples can be built with GCC (GNU Compiler Collection).
