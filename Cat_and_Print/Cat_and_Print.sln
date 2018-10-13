@@ -3,7 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cat", "cat\cat.vcxproj", "{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "print", "print\print.vcxproj", "{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Debug|x64.ActiveCfg = Debug|x64
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Debug|x64.Build.0 = Debug|x64
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Debug|x86.ActiveCfg = Debug|Win32
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Debug|x86.Build.0 = Debug|Win32
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Release|x64.ActiveCfg = Release|x64
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Release|x64.Build.0 = Release|x64
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Release|x86.ActiveCfg = Release|Win32
+		{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}.Release|x86.Build.0 = Release|Win32
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Debug|x64.ActiveCfg = Debug|x64
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Debug|x64.Build.0 = Debug|x64
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Debug|x86.ActiveCfg = Debug|Win32
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Debug|x86.Build.0 = Debug|Win32
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x64.ActiveCfg = Release|x64
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x64.Build.0 = Release|x64
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x86.ActiveCfg = Release|Win32
+		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
