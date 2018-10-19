@@ -1,5 +1,5 @@
 # os-experiments
-This repository contains experiments with operating systems, especially with Windows and Ubuntu.
+This repository contains experiments with operating systems, especially with Windows, Ubuntu and TrueOS.
 
 ## Some preconditions for successfull build
 
