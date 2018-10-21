@@ -9,6 +9,10 @@
 
 #include "helper_module.h"
 
+/* win_perror - prints last error message of NT
+ *
+ * May be called after every system call.
+ */
 void win_perror() {
 	LPWSTR err_msg = NULL;
 
@@ -23,6 +27,14 @@ void win_perror() {
 }
 
 
+/**
+ * copy_file - copies the file with source handle into the file with dest_handle
+ * @source_handle - handle of source file
+ * @dest_handle - handle of destination file
+ * 
+ * May be called to copy files.
+ * Returns BOOL value which informs whether the copying operation is done correctly
+ */
 BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	if (source_handle == INVALID_HANDLE_VALUE || dest_handle == INVALID_HANDLE_VALUE)
 		return FALSE;
@@ -59,28 +71,38 @@ BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	return TRUE;
 }
 
-void change_process_state(DWORD pid, void(__stdcall* functor)(HANDLE)) {
-	HANDLE hThreadSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+/**
+ * change_process_state - changes process state 
+ * @pid - process id
+ * @functor - function which will be called for every thread of program.
+ * 
+ * Be careful,this function MUST be called only with the following values of functor:
+ * SuspendThread or ResumeThread, otherwise there will be unexpected behavior(crash or something worse).
+ */
+ void change_process_state(DWORD pid, void(__stdcall* functor)(HANDLE)) {
+	HANDLE snapshot_handle = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 
-	LPTHREADENTRY32 threadEntry = (LPTHREADENTRY32)malloc(sizeof(THREADENTRY32));
-	threadEntry->dwSize = sizeof(THREADENTRY32);
+	LPTHREADENTRY32 p_entry = (LPTHREADENTRY32)malloc(sizeof(THREADENTRY32));
+	p_entry->dwSize = sizeof(THREADENTRY32);
 
-	Thread32First(hThreadSnapshot, threadEntry);
+	Thread32First(snapshot_handle, p_entry);
 
 	do
 	{
-		if (threadEntry->th32OwnerProcessID == pid)
+		if (p_entry->th32OwnerProcessID == pid)
 		{
-			HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE,
-				threadEntry -> th32ThreadID);
+			HANDLE hThread = OpenThread(
+				THREAD_ALL_ACCESS, 
+				FALSE,
+				p_entry-> th32ThreadID);
 
 			functor(hThread);
 			CloseHandle(hThread);
 		}
-	} while (Thread32Next(hThreadSnapshot, threadEntry));
+	} while (Thread32Next(snapshot_handle, p_entry));
 
-	free(threadEntry);
+	free(p_entry);
 
-	if (CloseHandle(hThreadSnapshot) == FALSE)
+	if (CloseHandle(snapshot_handle) == FALSE)
 		win_perror();	
 }

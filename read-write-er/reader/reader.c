@@ -7,6 +7,14 @@
 #include <stdio.h>
 #include "..\helper_module_lib\helper_module.h"
 
+/**
+ * ctrl_c_handler - handles CTRL + C event
+ * @ctrl_type - type of CTRL event
+ *
+ * This function is called by operating system when one of CTRL events occur.
+ * Returns BOOL value which informs the operating system
+ * whether the event has been successfully handled.
+ */
 static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
 	if (ctrl_type == CTRL_C_EVENT) {
 		change_process_state(writer_pid, ResumeThread);
@@ -17,6 +25,11 @@ static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
 	return FALSE;
 }
 
+/**
+ * init - initializes the reader program
+ *
+ * May be called in the beginning of entry point.
+ */
 void init() {
 	reader_handle = GetCurrentProcess();
 	reader_pid = GetCurrentProcessId();
@@ -43,6 +56,15 @@ void init() {
 		win_perror();
 }
 
+/**
+ * wmain - entry point for reader program
+ * @argc - count of arguments
+ * @argv - vector of arguments
+ * @envp - environment variables
+ *
+ * Returns integer values which informs the operating system
+ * whether the program has run correctly.
+ */
 int wmain(int argc, wchar_t** argv, wchar_t** envp) {
 	if (argc == 1 || argc > 2) {
 		wprintf(WRONG_ARG_COUNT);
