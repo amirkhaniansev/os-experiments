@@ -20,7 +20,7 @@ static DWORD  reader_pid = 0;
 static DWORD  writer_pid = 0;
 
 void win_perror();
-void change_process_state(DWORD, void(*functor)(HANDLE));
+void change_process_state(DWORD, void(__stdcall *functor)(HANDLE));
 BOOL copy_file(HANDLE, HANDLE);
 
 #endif 

@@ -59,7 +59,7 @@ BOOL copy_file(HANDLE source_handle, HANDLE dest_handle) {
 	return TRUE;
 }
 
-void change_process_state(DWORD pid, void(*functor)(HANDLE)) {
+void change_process_state(DWORD pid, void(__stdcall* functor)(HANDLE)) {
 	HANDLE hThreadSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 
 	LPTHREADENTRY32 threadEntry = (LPTHREADENTRY32)malloc(sizeof(THREADENTRY32));
@@ -79,6 +79,8 @@ void change_process_state(DWORD pid, void(*functor)(HANDLE)) {
 		}
 	} while (Thread32Next(hThreadSnapshot, threadEntry));
 
-	CloseHandle(hThreadSnapshot);
 	free(threadEntry);
+
+	if (CloseHandle(hThreadSnapshot) == FALSE)
+		win_perror();	
 }

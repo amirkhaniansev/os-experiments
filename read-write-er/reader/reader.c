@@ -8,7 +8,40 @@
 #include "..\helper_module_lib\helper_module.h"
 
 static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
-	return TRUE;
+	if (ctrl_type == CTRL_C_EVENT) {
+		change_process_state(writer_pid, ResumeThread);
+		change_process_state(reader_pid, SuspendThread);
+		
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+void init() {
+	reader_handle = GetCurrentProcess();
+	reader_pid = GetCurrentProcessId();
+
+	DWORD size = sizeof(PROCESSENTRY32);
+	LPPROCESSENTRY32 p_entry = (LPPROCESSENTRY32)malloc(size);
+	p_entry->dwSize = size;
+
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+
+	if(Process32First(snapshot,p_entry) == TRUE)
+		while(Process32Next(snapshot,p_entry) == TRUE)
+			if (wcscmp(p_entry->szExeFile, L"writer.exe") == 0) {
+				writer_pid = p_entry->th32ProcessID;
+				writer_handle = OpenProcess(
+					PROCESS_ALL_ACCESS,
+					FALSE,
+					p_entry->th32ProcessID);
+			}
+
+	free(p_entry);
+
+	if (CloseHandle(snapshot) == FALSE)
+		win_perror();
 }
 
 int wmain(int argc, wchar_t** argv, wchar_t** envp) {
@@ -21,6 +54,8 @@ int wmain(int argc, wchar_t** argv, wchar_t** envp) {
 		win_perror();
 		return -1;
 	}
+
+	init();
 
 	file_handle = CreateFile(
 		argv[1],

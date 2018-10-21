@@ -12,4 +12,5 @@ static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
 }
 
 int wmain(int argc, wchar_t** argv, wchar_t** envp) {
+	while (1) {}
 }
