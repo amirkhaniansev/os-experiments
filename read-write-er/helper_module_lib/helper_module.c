@@ -15,7 +15,7 @@ void win_perror() {
 	DWORD msg_size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL, GetLastError(), 0, err_msg, 0, NULL);
+		NULL, GetLastError(), 0, &err_msg, 0, NULL);
 
 	wprintf(WIN_PERROR_FORMAT, err_msg);
 

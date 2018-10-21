@@ -18,6 +18,7 @@ static HANDLE writer_handle = NULL;
 static HANDLE file_handle = NULL;
 static DWORD  reader_pid = 0;
 static DWORD  writer_pid = 0;
+static DWORD  file_begin = FILE_BEGIN;
 
 void win_perror();
 void change_process_state(DWORD, void(__stdcall *functor)(HANDLE));

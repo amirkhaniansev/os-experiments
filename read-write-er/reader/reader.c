@@ -10,8 +10,7 @@
 static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
 	if (ctrl_type == CTRL_C_EVENT) {
 		change_process_state(writer_pid, ResumeThread);
-		change_process_state(reader_pid, SuspendThread);
-		
+		change_process_state(reader_pid, SuspendThread);		
 		return TRUE;
 	}
 
@@ -70,11 +69,11 @@ int wmain(int argc, wchar_t** argv, wchar_t** envp) {
 		if (copy_file(GetStdHandle(STD_INPUT_HANDLE), file_handle) == FALSE) {
 			win_perror();
 
-			if (CloseHandle(file_handle) == FALSE)
-				win_perror();
-
 			return -1;
 		}
+
+	if (CloseHandle(file_handle) == FALSE)
+		win_perror();
 
 	return 0;
 }
