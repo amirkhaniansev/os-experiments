@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cat", "cat\cat.vcxproj", "{68C58A72-5CAD-4410-8CF7-F6F064CA41C1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "print", "print\print.vcxproj", "{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "print_files", "print\print.vcxproj", "{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinCat", "WinCat\WinCat.vcxproj", "{7CAC5B51-262D-46C7-AB25-A193F1A49002}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x64.Build.0 = Release|x64
 		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x86.ActiveCfg = Release|Win32
 		{A5BD1228-DEAE-4BC3-9470-1E588FE99A93}.Release|x86.Build.0 = Release|Win32
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Debug|x64.ActiveCfg = Debug|x64
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Debug|x64.Build.0 = Debug|x64
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Debug|x86.Build.0 = Debug|Win32
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Release|x64.ActiveCfg = Release|x64
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Release|x64.Build.0 = Release|x64
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Release|x86.ActiveCfg = Release|Win32
+		{7CAC5B51-262D-46C7-AB25-A193F1A49002}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
