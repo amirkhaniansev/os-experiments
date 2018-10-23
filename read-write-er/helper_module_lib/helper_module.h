@@ -17,10 +17,10 @@
 /* global variables */
 static HANDLE reader_handle = NULL;
 static HANDLE writer_handle = NULL;
-static HANDLE file_handle = NULL;
-static DWORD  reader_pid = 0;
-static DWORD  writer_pid = 0;
-static DWORD  file_begin = FILE_BEGIN;
+static HANDLE file_handle   = NULL;
+static DWORD  reader_pid    = 0;
+static DWORD  writer_pid    = 0;
+static DWORD  file_begin    = FILE_BEGIN;
 
 /* function signatures */
 void win_perror();

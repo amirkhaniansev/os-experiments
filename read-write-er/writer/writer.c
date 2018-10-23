@@ -7,24 +7,6 @@
 #include <stdio.h>
 #include "../helper_module_lib/helper_module.h"
 
- /**
- * ctrl_c_handler - handles CTRL + C event
- * @ctrl_type - type of CTRL event
- *
- * This function is called by operating system when one of CTRL events occur.
- * Returns BOOL value which informs the operating system 
- * whether the event has been successfully handled.
- */
-static BOOL WINAPI ctrl_c_handler(DWORD ctrl_type) {
-	if (ctrl_type == CTRL_C_EVENT) {
-		change_process_state(reader_pid, ResumeThread);
-		change_process_state(writer_pid, SuspendThread);
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
 /** 
  * init - initializes the writer program
  *
@@ -73,11 +55,6 @@ int wmain(int argc, wchar_t** argv, wchar_t** envp) {
 		return -1;
 	}
 
-	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)ctrl_c_handler, TRUE) == FALSE) {
-		win_perror();
-		return -1;
-	}
-
 	init();
 
 	file_handle = CreateFile(
@@ -89,12 +66,16 @@ int wmain(int argc, wchar_t** argv, wchar_t** envp) {
 		FILE_ATTRIBUTE_NORMAL,
 		0);
 
-	while (1)
+	while (1) {
 		if (copy_file(file_handle, GetStdHandle(STD_OUTPUT_HANDLE)) == FALSE) {
 			win_perror();
 
 			return -1;
 		}
+
+		change_process_state(reader_pid, ResumeThread);
+		change_process_state(writer_pid, SuspendThread);
+	}
 
 	if (CloseHandle(file_handle) == FALSE)
 		win_perror();
