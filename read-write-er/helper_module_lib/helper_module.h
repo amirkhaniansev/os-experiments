@@ -1,7 +1,7 @@
 /*
  * MIT License
  * Copyright (c) 2018 Sevak Amirkhanian <amirkhanyan.sevak@gmail.com>
- * For full notice please see https://github.com/amirkhaniansev/os-experiments/LICENSE
+ * For full notice please see https://github.com/amirkhaniansev/os-experiments/blob/master/LICENSE
  */
 
 #ifndef HELPER_MODULE_H
