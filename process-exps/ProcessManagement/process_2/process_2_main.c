@@ -45,6 +45,8 @@ int wmain(int argc, wchar_t** argv)
 
 	while (1)
 	{
+		Sleep(5);
+
 		if (isClosed == TRUE)
 		{
 			wprintf(L"Notepad closed");
