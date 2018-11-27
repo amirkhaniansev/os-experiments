@@ -1,5 +1,6 @@
 ﻿#include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 #include <Windows.h>
 
 struct interval_info 
