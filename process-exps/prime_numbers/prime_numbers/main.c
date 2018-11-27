@@ -119,7 +119,7 @@ int wmain(int argc, wchar_t** argv)
 
 	DeleteCriticalSection(&critical_section);
 	
-	print(L"Befor sorting : ");
+	print(L"Before sorting : ");
 
 	qsort(prime_numbers, enumerator, sizeof(int), comparator_func);
 	
