@@ -16,7 +16,7 @@
 #define CONSUMER_MSG_FORMAT      L"Consumer   %2d : %5x   emptied cell %d. "
 #define PRODUCER_CREATED_FORMAT  L"Producer   %2d : %5x   is created.\n"
 #define CONSUMER_CREATED_FORMAT  L"Consumer   %2d : %5x   is created.\n"
-#define BUFFER_STATE			 L"Buffer State : "
+#define BUFFER_STATE             L"Buffer State : "
 #define BUFFER_ITEM_FORMAT       L" %d "
 #define NEW_LINE                 L" \n"
 
