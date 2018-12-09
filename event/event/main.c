@@ -164,14 +164,18 @@ DWORD WINAPI make_capital_and_print(void* param)
 	{
 		WaitForSingleObject(event, INFINITE);
 
-		char* temp_buff = malloc(sizeof(char) * buffer_length);
+		char* temp_buff = malloc(sizeof(char) * (buffer_length + 1));
 
 		for (int i = 0; i < buffer_length; i++)
 		{
-			if (buffer[i] > 97 && buffer[i] < 123)
+			if (buffer[i] > 96 && buffer[i] < 123)
 				temp_buff[i] = buffer[i] - 32;
 			else temp_buff[i] = buffer[i];
 		}
+
+		temp_buff[buffer_length] = END;
+
+		printf(TEXT_FORMAT, temp_buff);
 
 		free(temp_buff);
 	}
