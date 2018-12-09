@@ -169,8 +169,8 @@ int wmain(int argc, wchar_t** argv)
 		wprintf(CONSUMER_CREATED_FORMAT, i , consumer_ids[i]);
 	}
 
-	WaitForMultipleObjects(2, producers, TRUE, INFINITE);
-	WaitForMultipleObjects(2, consumers, TRUE, INFINITE);
+	WaitForMultipleObjects(PRODUCERS_COUNT, producers, TRUE, INFINITE);
+	WaitForMultipleObjects(CONSUMERS_COUNT, consumers, TRUE, INFINITE);
 
 	finalize();
 
