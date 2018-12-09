@@ -1,3 +1,9 @@
+/*
+ * MIT License
+ * Copyright (c) 2018 Sevak Amirkhanian <amirkhanyan.sevak@gmail.com>
+ * Full notice : https://github.com/amirkhaniansev/os-experiments/tree/master/LICENSE
+ */
+
 #include <stdio.h>
 #include <Windows.h>
 
