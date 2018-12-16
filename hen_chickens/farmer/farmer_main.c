@@ -46,10 +46,12 @@ void assert(_Bool expression, wchar_t* msg, int exit_code)
 // creates synchronization objetcs
 void create_sync_objects(int amount_of_food)
 {
+	// creating mutex
 	assert(CreateMutex(
 		NULL, FALSE, FOOD_MUTEX_NAME) != NULL,
 		MUTEX_ERROR, -1);
 
+	// creating semaphores
 	assert(CreateSemaphore(
 		NULL, 0, amount_of_food, FULL_SEMAPHORE_NAME) != NULL,
 		SEMAPHORE_ERROR, -1);
@@ -92,6 +94,7 @@ void create_hen()
 {
 	wchar_t cmd_buffer[400];
 
+	// constructing command line arguments
 	wsprintf(cmd_buffer, HEN_CMD_PATTERN,
 		HEN_NAME,
 		FOOD_NAME,
@@ -131,12 +134,16 @@ void create_hen()
 void create_chickens(int amount)
 {
 	wchar_t cmd_buffer[400];
+
 	STARTUPINFO chicken_startup_info;
 	PROCESS_INFORMATION chicken_process_info;
+	
 	BOOL is_chicken_created = FALSE;
+	
 	unsigned int startup_info_size = sizeof(STARTUPINFO);
 	unsigned int process_info_size = sizeof(PROCESS_INFORMATION);
 
+	// starting creation of chicken processes
 	for (int i = 0; i < amount; i++)
 	{
 		ZeroMemory(&chicken_startup_info, startup_info_size);
@@ -144,6 +151,7 @@ void create_chickens(int amount)
 
 		chicken_startup_info.cb = startup_info_size;
 
+		// constructing command line arguments
 		wsprintf(cmd_buffer, CHICKEN_CMD_PATTERN,
 			CHICKEN_NAME,
 			FOOD_NAME,
