@@ -30,7 +30,7 @@ int wmain(int argc, wchar_t** argv)
 	HANDLE full_semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, argv[3]);
 	HANDLE empty_semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, argv[4]);
 
-	unsigned char* view = NULL;
+	unsigned char* view = MapViewOfFile(map, FILE_MAP_ALL_ACCESS, 0, 0, 0);
 	unsigned char amount = 0;
 
 	while (1)
@@ -38,8 +38,7 @@ int wmain(int argc, wchar_t** argv)
 		WaitForSingleObject(empty_semaphore, INFINITE);
 		WaitForSingleObject(mutex, INFINITE);
 
-		view = MapViewOfFile(map, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-
+		
 		if (view != NULL)
 		{
 			amount = view[0];
@@ -54,11 +53,11 @@ int wmain(int argc, wchar_t** argv)
 			wprintf(FILL_MESSAGE, amount);
 		}
 
-		UnmapViewOfFile(view);
-
 		ReleaseMutex(mutex);
 		ReleaseSemaphore(full_semaphore, amount, NULL);
 	}
+
+	UnmapViewOfFile(view);
 
 	CloseHandle(map);
 	CloseHandle(mutex);
