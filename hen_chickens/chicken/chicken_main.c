@@ -22,19 +22,29 @@ void exit_with_message(wchar_t* msg, int exit_code)
 // entry point for hen process
 int wmain(int argc, wchar_t** argv)
 {
+	// parsing command line arguments 
 	if (argc != 6)
 		exit_with_message(INVALID_ARG_MSG, -1);
 
+	// opening file mapping
 	HANDLE map = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, argv[1]);
+	
+	// opening mutex
 	HANDLE mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, argv[2]);
+	
+	// opening semaphores
 	HANDLE full_semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, argv[3]);
 	HANDLE empty_semaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, argv[4]);
+	
 	int chicken_number = _wtoi(argv[5]);
 
+	// mapping view
 	unsigned char* view = MapViewOfFile(map, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+	
 	unsigned char amount = 0;
 	unsigned char enumerator = 0;
 
+	// starting flow
 	while (1)
 	{
 		Sleep((rand() % 2) * 1000);
@@ -58,8 +68,10 @@ int wmain(int argc, wchar_t** argv)
 			ReleaseSemaphore(empty_semaphore, 1L, NULL);
 	}
 
+	// unmapping
 	UnmapViewOfFile(view);
 
+	// closing handles
 	CloseHandle(map);
 	CloseHandle(mutex);
 	CloseHandle(full_semaphore);
